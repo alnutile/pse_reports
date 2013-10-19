@@ -1,0 +1,8 @@
+name = PSE Reports
+description = Reports API
+package = PSE
+core = 7.x
+dependencies[] = composer_manager
+dependencies[] = jquery_update
+
+

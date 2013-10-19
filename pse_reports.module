@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * @file pse_reports.module
+ * TODO: Enter file description here.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function pse_reports_menu() {
+    $path = drupal_get_path('module', 'pse_reports');
+
+    $items = array();
+
+    $items['test'] = array(
+        'title' => 'Test Area',
+        'page callback' => 'pse_test',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/pse/charts'] = array(
+        'title' => 'Admin Charts',
+        'page callback' => 'pse_admin',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+        'file' => 'includes/admin.inc'
+    );
+
+    $items['pse/get/alumni_compare_industry'] = array(
+        'title' => 'Compare Industry',
+        'page callback' => 'pse_get_alumni_compare_industry',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+        'file' => 'routes.php'
+    );
+  return $items;
+}
+
+
+function pse_test() {
+    $output = 'Test Area';
+    $output .= theme('pse_reports_pie_chart');
+    return $output;
+}
+
+/**
+ * Implements hook_library().
+ *
+ */
+function pse_reports_library() {
+    $path = drupal_get_path('module', 'pse_reports');
+    $libraries['d3'] = array(
+        'title' => 'D3',
+        'website' => "http://d3js.org/d3.v3.zip",
+        'version' => '3.v3',
+        'js' => array(
+            $path . '/js/d3/d3.v3.js' => array(),
+        ),
+    );
+    $libraries['chart_js'] = array(
+        'title' => 'Chart.js',
+        'website' => "https://raw.github.com/Regaddi/Chart.js/master/Chart.js",
+        'version' => '0.2.0',
+        'js' => array(
+            $path . '/js/Chart.js' => array(),
+        ),
+    );
+    return $libraries;
+}
+
+function pse_reports_theme(){
+    $items['pse_reports_pie_chart'] = array(
+        'variables' => array(
+            'params' => NULL,
+        ),
+        'file' => 'tpl/pse_reports_pie_chart.inc'
+    );
+    return $items;
+}
+
+/**
+ * Preprocessor that runs *before* template_preprocess_page().
+ */
+function pse_reports_page_build(&$page) {
+
+    drupal_add_library('pse_reports', 'chart_js');
+    $path = drupal_get_path('module', 'pse_reports');
+    drupal_add_js($path . '/js/app.js');
+    drupal_add_js($path . '/js/alumni_compare_industry.js');
+
+}
+
+/**
+ * Implements hook_filter_info().
+ *
+ * Here we define the different filters provided by the module. For this example,
+ * time_filter is a very static and simple replacement, but it requires some
+ * preparation of the string because of the special html tags < and >. The
+ * foo_filter is more complex, including its own settings and inline tips.
+ */
+function pse_reports_filter_info() {
+    $filters['pr_token'] = array(
+        'title' => t('Add Chart to Node'),
+        'description' => t('More info can be seen here !link.', array('!link' => l('admin charts', 'admin/pse/charts'))),
+        'process callback'  => '_pse_reports_filter_pr_token_process',
+    );
+    return $filters;
+}
+
+
+function _pse_reports_filter_pr_token_process($text, $filter, $format) {
+    $filters = array(
+        'pse_reports_pie_chart' => '[ALUMNI_COMPARE_INDUSTRY]'
+    );
+    foreach($filters as $key => $value) {
+        $replacement = theme($key);
+        $text = str_replace($value, $replacement, $text);
+    }
+    return $text;
+}

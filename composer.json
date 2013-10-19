@@ -1,0 +1,23 @@
+{
+    "name": "drupal/pse_reports",
+    "type": "drupal-module",
+    "description": "Reports framework for PSE",
+    "homepage": "https://github.com/alnutile/pse_reports",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Alfred Nutile",
+            "email": "alfrednutile@gmail.com",
+            "role": "The guy behind the keyboard"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/alnutile/pse_reports/issues"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Drupal\\PSEReports\\Controllers\\": "src/"
+        }
+    }
+}
