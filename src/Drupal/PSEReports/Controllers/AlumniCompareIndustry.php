@@ -13,14 +13,14 @@ class AlumniCompareIndustry extends Reports {
         $rows = array();
         $groups = array();
         $data = array();
-        db_set_active('pse');
-        $query = db_select('test1', 'r');
-        $query->fields('r');
-        $query->condition('r.type', '', '!=');
+        db_set_active('pse2');
+        $query = db_select('v1_addresses', 'r');
+        $query->fields('r', array('id', 'btype', 'bcompany', 'bcity', 'bposition', 'bcountry'));
+        $query->condition('r.btype', '', '!=');
         $result = $query->execute();
         db_set_active();
         foreach ($result as $record) {
-            $groups[$record->type][] = (array) $record;
+            $groups[$record->btype][] = (array) $record;
             $rows[] = (array) $record;
         }
 
@@ -41,9 +41,9 @@ class AlumniCompareIndustry extends Reports {
 
     public function keys() {
         return array(
-            'G' => array('label' => 'Government', 'color' => '#F38630', 'labelFontSize' => '16', 'labelColor' => 'white', 'value' => 0),
-            'I' => array('label' => 'Industrial', 'color' => '#E0E4CC', 'labelFontSize' => '16', 'labelColor' => 'white', 'value' => 0),
-            'A' => array('label' => 'Academic', 'color' => '#69D2E7', 'labelFontSize' => '16', 'labelColor' => 'white', 'value' => 0),
+            'G' => array('label' => 'Government', 'color' => '#F38630', 'labelFontSize' => '17', 'labelColor' => 'white', 'value' => 0, 'labelFontFamily' => 'Times'),
+            'I' => array('label' => 'Industrial', 'color' => '#80A22B', 'labelFontSize' => '17', 'labelColor' => 'white', 'value' => 0, 'labelFontFamily' => 'Times'),
+            'A' => array('label' => 'Academic', 'color' => '#69D2E7', 'labelFontSize' => '17', 'labelColor' => 'white', 'value' => 0, 'labelFontFamily' => 'Times'),
         );
     }
 }

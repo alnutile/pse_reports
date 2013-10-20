@@ -6,6 +6,18 @@
  */
 
 /**
+ * Implements hook_permissions().
+ */
+
+function pse_reports_permissions(){
+    $items['admin pse'] = array(
+        'title' => t('Administer PSE area')
+    );
+
+    return $items;
+}
+
+/**
  * Implements hook_menu().
  */
 function pse_reports_menu() {
@@ -13,17 +25,10 @@ function pse_reports_menu() {
 
     $items = array();
 
-    $items['test'] = array(
-        'title' => 'Test Area',
-        'page callback' => 'pse_test',
-        'access arguments' => array('access content'),
-        'type' => MENU_CALLBACK,
-    );
-
     $items['admin/pse/charts'] = array(
         'title' => 'Admin Charts',
         'page callback' => 'pse_admin',
-        'access arguments' => array('access content'),
+        'access arguments' => array('admin pse'),
         'type' => MENU_CALLBACK,
         'file' => 'includes/admin.inc'
     );
