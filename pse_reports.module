@@ -29,7 +29,7 @@ function pse_reports_menu() {
     $items['admin/pse/charts'] = array(
         'title' => 'Admin Charts',
         'page callback' => 'pse_admin',
-        'access callback' => 'admin pse',
+        'access arguments' => array('admin pse'),
         'type' => MENU_CALLBACK,
         'file' => 'includes/admin.inc'
     );
