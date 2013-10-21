@@ -9,12 +9,13 @@
  * Implements hook_permissions().
  */
 
-function pse_reports_permissions(){
-    $items['admin pse'] = array(
-        'title' => t('Administer PSE area')
+function pse_reports_permission(){
+    return array(
+        'admin pse' => array(
+            'title' => t('Administer PSE area'),
+            'description' => t('See all chart tokens and manage')
+            ),
     );
-
-    return $items;
 }
 
 /**
@@ -28,7 +29,7 @@ function pse_reports_menu() {
     $items['admin/pse/charts'] = array(
         'title' => 'Admin Charts',
         'page callback' => 'pse_admin',
-        'access arguments' => array('admin pse'),
+        'access callback' => 'admin pse',
         'type' => MENU_CALLBACK,
         'file' => 'includes/admin.inc'
     );
@@ -36,7 +37,7 @@ function pse_reports_menu() {
     $items['pse/get/alumni_compare_industry'] = array(
         'title' => 'Compare Industry',
         'page callback' => 'pse_get_alumni_compare_industry',
-        'access arguments' => array('access content'),
+        'access callback' => TRUE,
         'type' => MENU_CALLBACK,
         'file' => 'routes.php'
     );
