@@ -8,7 +8,7 @@
             var protocol = window.location.protocol;
             function drawChart() {
                 $.ajax({
-                    url:  protocol + '//' + url + '/' + base +"pse/get/alumni_compare_industry"
+                    url:  protocol + '//' + url + base +"pse/get/alumni_compare_industry"
                 }).done(function(data) {
                         arrayData = data;
                         $('div.aci-total').append("Total Records " + data['count'] );
