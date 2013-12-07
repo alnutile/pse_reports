@@ -10,45 +10,54 @@
  */
 
 function pse_reports_permission(){
-    return array(
-        'admin pse' => array(
-            'title' => t('Administer PSE area'),
-            'description' => t('See all chart tokens and manage')
-            ),
-    );
+  return array(
+    'admin pse' => array(
+      'title' => t('Administer PSE area'),
+      'description' => t('See all chart tokens and manage')
+    ),
+  );
 }
 
 /**
  * Implements hook_menu().
  */
 function pse_reports_menu() {
-    $path = drupal_get_path('module', 'pse_reports');
+  $path = drupal_get_path('module', 'pse_reports');
 
-    $items = array();
+  $items = array();
 
-    $items['admin/pse/charts'] = array(
-        'title' => 'Admin Charts',
-        'page callback' => 'pse_admin',
-        'access arguments' => array('admin pse'),
-        'type' => MENU_CALLBACK,
-        'file' => 'includes/admin.inc'
-    );
+  $items['admin/pse/charts'] = array(
+    'title' => 'Admin Charts',
+    'page callback' => 'pse_admin',
+    'access arguments' => array('admin pse'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/admin.inc'
+  );
 
-    $items['pse/get/alumni_compare_industry'] = array(
-        'title' => 'Compare Industry',
-        'page callback' => 'pse_get_alumni_compare_industry',
-        'access callback' => TRUE,
-        'type' => MENU_CALLBACK,
-        'file' => 'routes.php'
-    );
+  $items['pse/get/alumni_compare_industry'] = array(
+    'title' => 'Compare Industry',
+    'page callback' => 'pse_get_alumni_compare_industry',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'routes.php'
+  );
+
+  $items['pse/get/background_current_students'] = array(
+    'title' => 'Background of current students',
+    'page callback' => 'pse_reports_background_current_students',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'routes.php'
+  );
+
   return $items;
 }
 
 
 function pse_test() {
-    $output = 'Test Area';
-    $output .= theme('pse_reports_pie_chart');
-    return $output;
+  $output = 'Test Area';
+  $output .= theme('pse_reports_pie_chart');
+  return $output;
 }
 
 /**
@@ -56,46 +65,61 @@ function pse_test() {
  *
  */
 function pse_reports_library() {
-    $path = drupal_get_path('module', 'pse_reports');
-    $libraries['d3'] = array(
-        'title' => 'D3',
-        'website' => "http://d3js.org/d3.v3.zip",
-        'version' => '3.v3',
-        'js' => array(
-            $path . '/js/d3/d3.v3.js' => array(),
-        ),
-    );
-    $libraries['chart_js'] = array(
-        'title' => 'Chart.js',
-        'website' => "https://raw.github.com/Regaddi/Chart.js/master/Chart.js",
-        'version' => '0.2.0',
-        'js' => array(
-            $path . '/js/Chart.js' => array(),
-        ),
-    );
-    return $libraries;
+  $path = drupal_get_path('module', 'pse_reports');
+  $libraries['d3'] = array(
+    'title' => 'D3',
+    'website' => "http://d3js.org/d3.v3.zip",
+    'version' => '3.v3',
+    'js' => array(
+      $path . '/js/d3/d3.v3.js' => array(),
+    ),
+  );
+  $libraries['chart_js'] = array(
+    'title' => 'Chart.js',
+    'website' => "https://raw.github.com/Regaddi/Chart.js/master/Chart.js",
+    'version' => '0.2.0',
+    'js' => array(
+      $path . '/js/Chart.js' => array(),
+    ),
+  );
+  $libraries['google_charts'] = array(
+    'title' => 'google_charts',
+    'website' => "https://www.google.com/jsapi",
+    'version' => '1.0',
+    'js' => array(
+      $path . '/js/google_charts/jsapi.js' => array(),
+    ),
+  );
+  return $libraries;
 }
 
 function pse_reports_theme(){
-    $items['pse_reports_pie_chart'] = array(
-        'variables' => array(
-            'params' => NULL,
-        ),
-        'file' => 'tpl/pse_reports_pie_chart.inc'
-    );
-    return $items;
+  $items['pse_reports_pie_chart'] = array(
+    'variables' => array(
+      'params' => NULL,
+    ),
+    'file' => 'tpl/pse_reports_pie_chart.inc'
+  );
+  $items['pse_reports_three_d_pie_chart'] = array(
+    'variables' => array(
+      'params' => NULL,
+    ),
+    'file' => 'tpl/pse_reports_three_d_pie_chart.inc'
+  );
+  return $items;
 }
 
 /**
  * Preprocessor that runs *before* template_preprocess_page().
  */
 function pse_reports_page_build(&$page) {
-
-    drupal_add_library('pse_reports', 'chart_js');
-    $path = drupal_get_path('module', 'pse_reports');
-    drupal_add_js($path . '/js/app.js');
-    drupal_add_js($path . '/js/alumni_compare_industry.js');
-
+  drupal_add_js("google.load('visualization', '1.0', {'packages':['corechart']})", array('scope' => 'header', 'type' => 'inline'));
+  drupal_add_library('pse_reports', 'chart_js');
+  drupal_add_library('pse_reports', 'google_charts');
+  $path = drupal_get_path('module', 'pse_reports');
+  drupal_add_js($path . '/js/app.js');
+  drupal_add_js($path . '/js/alumni_compare_industry.js');
+  drupal_add_js($path . '/js/background_current_students.js', $options = array('scope' => 'footer'));
 }
 
 /**
@@ -107,22 +131,24 @@ function pse_reports_page_build(&$page) {
  * foo_filter is more complex, including its own settings and inline tips.
  */
 function pse_reports_filter_info() {
-    $filters['pr_token'] = array(
-        'title' => t('Add Chart to Node'),
-        'description' => t('More info can be seen here !link.', array('!link' => l('admin charts', 'admin/pse/charts'))),
-        'process callback'  => '_pse_reports_filter_pr_token_process',
-    );
-    return $filters;
+  $filters['pr_token'] = array(
+    'title' => t('Add Chart to Node'),
+    'description' => t('More info can be seen here !link.', array('!link' => l('admin charts', 'admin/pse/charts'))),
+    'process callback'  => '_pse_reports_filter_pr_token_process',
+  );
+  return $filters;
 }
 
 
 function _pse_reports_filter_pr_token_process($text, $filter, $format) {
-    $filters = array(
-        'pse_reports_pie_chart' => '[ALUMNI_COMPARE_INDUSTRY]'
-    );
-    foreach($filters as $key => $value) {
-        $replacement = theme($key);
-        $text = str_replace($value, $replacement, $text);
-    }
-    return $text;
+  $filters = array(
+    'pse_reports_pie_chart|aci' => '[ALUMNI_COMPARE_INDUSTRY]',
+    'pse_reports_three_d_pie_chart|bcs' => '[BACKGROUND_CURRENT_STUDENTS_3D_PIE]',
+  );
+  foreach($filters as $key => $value) {
+    $theme_name = explode('|',$key);
+    $replacement = theme($theme_name[0]);
+    $text = str_replace($value, $replacement, $text);
+  }
+  return $text;
 }
