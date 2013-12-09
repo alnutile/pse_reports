@@ -37,7 +37,7 @@
             if($('#alumni_compare_industry').length){
                 // Load the Visualization API and the piechart package.
 
-                function bcsChart() {
+                function aigChart() {
                     $.ajax({
                         url:  protocol + '//' + url + base +"pse/get/alumni_compare_industry"
                     }).done(function(aig_data) {
@@ -48,7 +48,7 @@
 
                 }
 
-                bcsChart();
+                aigChart();
             }
         }
     };
