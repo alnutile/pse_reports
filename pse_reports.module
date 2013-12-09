@@ -106,6 +106,12 @@ function pse_reports_theme(){
     ),
     'file' => 'tpl/pse_reports_three_d_pie_chart.inc'
   );
+  $items['pse_reports_three_d_pie_chart_aig'] = array(
+    'variables' => array(
+      'params' => NULL,
+    ),
+    'file' => 'tpl/pse_reports_three_d_pie_chart_aig.inc'
+  );
   return $items;
 }
 
@@ -120,6 +126,7 @@ function pse_reports_page_build(&$page) {
   drupal_add_js($path . '/js/app.js');
   drupal_add_js($path . '/js/alumni_compare_industry.js');
   drupal_add_js($path . '/js/background_current_students.js', $options = array('scope' => 'footer'));
+  drupal_add_js($path . '/js/alumni_compare_industry.js', $options = array('scope' => 'footer'));
 }
 
 /**
@@ -142,7 +149,7 @@ function pse_reports_filter_info() {
 
 function _pse_reports_filter_pr_token_process($text, $filter, $format) {
   $filters = array(
-    'pse_reports_pie_chart|aci' => '[ALUMNI_COMPARE_INDUSTRY]',
+    'pse_reports_three_d_pie_chart_aig|aci' => '[ALUMNI_COMPARE_INDUSTRY]',
     'pse_reports_three_d_pie_chart|bcs' => '[BACKGROUND_CURRENT_STUDENTS_3D_PIE]',
   );
   foreach($filters as $key => $value) {
