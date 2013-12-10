@@ -2,7 +2,7 @@
  * Created by andrewcavanagh on 12/7/13.
  */
 (function ($) {
-   // Callback that creates and populates a data table,
+    // Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
     Drupal.pse_reports.drawChart3DPieAlums = function(alums_arrayData) {

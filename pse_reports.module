@@ -167,7 +167,7 @@ function _pse_reports_filter_pr_token_process($text, $filter, $format) {
   $filters = array(
     'pse_reports_three_d_pie_chart_aig|aci' => '[ALUMNI_COMPARE_INDUSTRY]',
     'pse_reports_three_d_pie_chart|bcs' => '[BACKGROUND_CURRENT_STUDENTS_3D_PIE]',
-    'pse_reports_three_d_pie_chart_alums|alums' => '[INDUSTRY_EMPLOYMENT_PSE_ALUMS]',
+    'industry_employment_pse_alums|alums' => '[INDUSTRY_EMPLOYMENT_PSE_ALUMS]',
   );
   foreach($filters as $key => $value) {
     $theme_name = explode('|',$key);

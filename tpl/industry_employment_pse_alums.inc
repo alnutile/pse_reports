@@ -10,8 +10,7 @@ function theme_industry_employment_pse_alums($variables){
   </div>
 
   ');
-  //$path = drupal_get_path('module', 'pse_reports');
-  //$build['chart']['#attached']['js'][] = array('pse_reports' => , 'type' => 'inline');
+
   return render($build);
 
 
