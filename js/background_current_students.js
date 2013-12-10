@@ -6,13 +6,13 @@
     // Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
-    Drupal.pse_reports.drawChart3DPie = function(arrayData) {
+    Drupal.pse_reports.drawChart3DPie = function(bcs_arrayData) {
 
         // Create the data table.
         var dataGoogleChart = new google.visualization.DataTable();
         dataGoogleChart.addColumn('string', 'Programs');
         dataGoogleChart.addColumn('number', 'Count');
-        dataGoogleChart.addRows(arrayData);
+        dataGoogleChart.addRows(bcs_arrayData);
 
         // Set chart options
         var options = {'title':'Background of current students (BCS)',

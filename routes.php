@@ -17,3 +17,11 @@ function pse_reports_background_current_students() {
   echo drupal_json_output($output);
   exit();
 }
+
+function industry_employment_pse_alums() {
+  composer_manager_register_autoloader();
+  $test = new Drupal\PSEReports\Controllers\IndustryEmploymentPseAlums();
+  $output = $test->getReport();
+  echo drupal_json_output($output);
+  exit();
+}

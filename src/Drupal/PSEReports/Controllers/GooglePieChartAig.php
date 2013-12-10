@@ -27,7 +27,7 @@ class GooglePieChartAig {
       }elseif ($value->btype == 'G') {
         $value->btype = 'Government';
       }
-      $data[] = array($value->btype, intval($value->count));
+      $data[] = array($value->btype, intval($value->cnt));
     }
     return $data;
   }

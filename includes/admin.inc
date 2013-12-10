@@ -29,5 +29,16 @@ function pse_admin() {
     '#markup' => $pie
   );
 
+
+  $build['alums_title'] = array(
+    '#markup' => t('<br>Industry Employment of PSE Alums. The token for this is [INDUSTRY_EMPLOYMENT_PSE_ALUMS]')
+  );
+
+  $pie = theme('industry_employment_pse_alums', array());
+
+  $build['alums_chart'] = array(
+    '#markup' => $pie
+  );
+
   return $build;
 }

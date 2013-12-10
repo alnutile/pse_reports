@@ -3,7 +3,7 @@
 namespace Drupal\PSEReports\Controllers;
 use Drupal\PSEReports\Controllers;
 
-class AlumniCompareIndustry extends Reports {
+class IndustryEmploymentPseAlums extends Reports {
 
   public function __construct() {
     composer_manager_register_autoloader();
@@ -15,16 +15,15 @@ class AlumniCompareIndustry extends Reports {
     $data = array();
     $string = 'program';
     db_set_active('pse2');
-    $query = db_select('v1_addresses', 'r');
-    $query->fields('r', array('btype'));
-    //$query->addExpression('btype', 'program');
-    $query->condition('r.btype', '', '!=');
-    $query->groupBy('btype');
-    $query->addExpression('COUNT(r.btype)', 'cnt');
+    $query = db_select('VIEW_Employment', 'e');
+    $query->fields('e', array('cnt'));
+    $query->addExpression('employment', 'program');
+    $query->condition('e.employment', '', '!=');
+    $query->groupBy('employment');
     $results = $query->execute();
     db_set_active();
 
-    $data = new GooglePieChartAig($results);
+    $data = new GooglePieChart($results);
 
 
 

@@ -50,6 +50,14 @@ function pse_reports_menu() {
     'file' => 'routes.php'
   );
 
+  $items['pse/get/industry_employment_pse_alums'] = array(
+    'title' => 'Industry Employment of Pse Alums',
+    'page callback' => 'industry_employment_pse_alums',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'routes.php'
+  );
+
   return $items;
 }
 
@@ -112,6 +120,12 @@ function pse_reports_theme(){
     ),
     'file' => 'tpl/pse_reports_three_d_pie_chart_aig.inc'
   );
+  $items['industry_employment_pse_alums'] = array(
+    'variables' => array(
+      'params' => NULL,
+    ),
+    'file' => 'tpl/industry_employment_pse_alums.inc'
+  );
   return $items;
 }
 
@@ -120,6 +134,7 @@ function pse_reports_theme(){
  */
 function pse_reports_page_build(&$page) {
   drupal_add_js("google.load('visualization', '1.0', {'packages':['corechart']})", array('scope' => 'header', 'type' => 'inline'));
+  drupal_add_js("google.load('visualization', '1', {packages:['table']})", array('scope' => 'header', 'type' => 'inline'));
   drupal_add_library('pse_reports', 'chart_js');
   drupal_add_library('pse_reports', 'google_charts');
   $path = drupal_get_path('module', 'pse_reports');
@@ -127,6 +142,7 @@ function pse_reports_page_build(&$page) {
   drupal_add_js($path . '/js/alumni_compare_industry.js');
   drupal_add_js($path . '/js/background_current_students.js', $options = array('scope' => 'footer'));
   drupal_add_js($path . '/js/alumni_compare_industry.js', $options = array('scope' => 'footer'));
+  drupal_add_js($path . '/js/industry_employment_pse_alums.js', $options = array('scope' => 'footer'));
 }
 
 /**
@@ -151,6 +167,7 @@ function _pse_reports_filter_pr_token_process($text, $filter, $format) {
   $filters = array(
     'pse_reports_three_d_pie_chart_aig|aci' => '[ALUMNI_COMPARE_INDUSTRY]',
     'pse_reports_three_d_pie_chart|bcs' => '[BACKGROUND_CURRENT_STUDENTS_3D_PIE]',
+    'pse_reports_three_d_pie_chart_alums|alums' => '[INDUSTRY_EMPLOYMENT_PSE_ALUMS]',
   );
   foreach($filters as $key => $value) {
     $theme_name = explode('|',$key);

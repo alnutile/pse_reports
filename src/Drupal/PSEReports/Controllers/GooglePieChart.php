@@ -20,6 +20,7 @@ class GooglePieChart {
   public function strucutureData() {
     $data = array();
     foreach($this->results as $key=>$value) {
+
       $data[] = array($value->program, intval($value->cnt));
     }
     return $data;
